@@ -1,5 +1,6 @@
 package com.example.inkSpire.service;
 
+import com.example.inkSpire.dto.LoginDto;
 import com.example.inkSpire.dto.SignupDto;
 import com.example.inkSpire.dto.UserDetailsDto;
 import com.example.inkSpire.entity.AppUser;
@@ -33,5 +34,8 @@ public class AuthService {
         );
 
         return new SignupDto(appUser.getId(),appUser.getUsername());
+    }
+
+    public Object userLogin(LoginDto loginDto) {
     }
 }
