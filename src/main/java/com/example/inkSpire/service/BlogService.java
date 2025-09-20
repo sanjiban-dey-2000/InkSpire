@@ -2,6 +2,7 @@ package com.example.inkSpire.service;
 
 import com.example.inkSpire.dto.BlogDto;
 import com.example.inkSpire.dto.BlogResponseDto;
+import com.example.inkSpire.dto.GetBlogDto;
 import com.example.inkSpire.entity.AppUser;
 import com.example.inkSpire.entity.Blog;
 import com.example.inkSpire.repository.AppUserRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BlogService {
@@ -41,5 +43,12 @@ public class BlogService {
         blog=blogRepository.save(blog);
 
         return modelMapper.map(blog, BlogResponseDto.class);
+    }
+
+    public List<GetBlogDto> getAllBlogs() {
+        List<Blog> blog= blogRepository.findAll();
+        List<GetBlogDto> blogDetailsDto=blog.stream().map(blogs->modelMapper.map(blogs,GetBlogDto.class)).toList();
+
+        return blogDetailsDto;
     }
 }

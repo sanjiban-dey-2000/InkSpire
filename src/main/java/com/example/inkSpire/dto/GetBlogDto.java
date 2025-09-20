@@ -1,0 +1,19 @@
+package com.example.inkSpire.dto;
+
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class GetBlogDto {
+
+    private Long id;
+    private String title;
+    private String body;
+    private LocalDateTime createdAt;
+    private  UserDto user;
+}
