@@ -1,5 +1,6 @@
 package com.example.inkSpire.service;
 
+import com.example.inkSpire.dto.BlogDto;
 import com.example.inkSpire.repository.BlogRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,5 +10,8 @@ public class BlogService {
 
     public BlogService(BlogRepository blogRepository) {
         this.blogRepository = blogRepository;
+    }
+
+    public Object addBlogs(BlogDto blogDto) {
     }
 }
