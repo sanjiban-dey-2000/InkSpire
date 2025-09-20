@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,5 +49,14 @@ public class BlogService {
         List<GetBlogDto> blogDetailsDto=blog.stream().map(blogs->modelMapper.map(blogs,GetBlogDto.class)).toList();
 
         return blogDetailsDto;
+    }
+
+
+    public List<BlogDto> getMyBlogs() {
+        Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+        AppUser user=(AppUser) auth.getPrincipal();
+        AppUser existingUser=userRepository.findById(user.getId()).orElseThrow();
+
+        return existingUser.getBlogs().stream().map(blog->modelMapper.map(blog,BlogDto.class)).toList();
     }
 }

@@ -33,4 +33,13 @@ public class BlogController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/myblogs")
+    public ResponseEntity<?> getMyBlogs(){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(blogService.getMyBlogs());
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
