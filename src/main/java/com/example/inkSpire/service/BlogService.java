@@ -7,11 +7,14 @@ import com.example.inkSpire.entity.AppUser;
 import com.example.inkSpire.entity.Blog;
 import com.example.inkSpire.repository.AppUserRepository;
 import com.example.inkSpire.repository.BlogRepository;
+import com.example.inkSpire.security.CustomUserDetails;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,5 +61,14 @@ public class BlogService {
         AppUser existingUser=userRepository.findById(user.getId()).orElseThrow();
 
         return existingUser.getBlogs().stream().map(blog->modelMapper.map(blog,BlogDto.class)).toList();
+    }
+
+    public void deleteByBlog(Long blogId) throws AccessDeniedException {
+        if(!blogRepository.existsById(blogId)){
+            throw new ResourceAccessException("Blog not found with id "+blogId);
+        }
+
+        blogRepository.deleteById(blogId);
+
     }
 }

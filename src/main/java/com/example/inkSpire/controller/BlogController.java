@@ -42,4 +42,14 @@ public class BlogController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/blog/{blogId}/remove")
+    public ResponseEntity<?> deleteBlogByID(@PathVariable Long blogId){
+        try{
+            blogService.deleteByBlog(blogId);
+            return ResponseEntity.noContent().build();
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
