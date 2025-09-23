@@ -1,10 +1,13 @@
 package com.example.inkSpire.controller;
 
 import com.example.inkSpire.dto.BlogDto;
+import com.example.inkSpire.dto.BlogResponseDto;
 import com.example.inkSpire.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -60,5 +63,10 @@ public class BlogController {
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/blogs/search")
+    public ResponseEntity<List<BlogResponseDto>> searchByKeyword(@RequestParam("q") String keyword){
+        return ResponseEntity.status(HttpStatus.OK).body(blogService.searchByKeyword(keyword));
     }
 }

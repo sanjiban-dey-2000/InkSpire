@@ -79,4 +79,9 @@ public class BlogService {
         existingBlog=blogRepository.save(existingBlog);
         return modelMapper.map(existingBlog,BlogResponseDto.class);
     }
+
+    public List<BlogResponseDto> searchByKeyword(String keyword) {
+        List<Blog> blogs=blogRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(keyword,keyword);
+        return blogs.stream().map(allBlogs->modelMapper.map(allBlogs,BlogResponseDto.class)).toList();
+    }
 }
