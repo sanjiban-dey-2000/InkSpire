@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,20 +54,29 @@ public class BlogService {
     }
 
 
-    public List<BlogDto> getMyBlogs() {
+    public List<BlogResponseDto> getMyBlogs() {
         Authentication auth=SecurityContextHolder.getContext().getAuthentication();
         AppUser user=(AppUser) auth.getPrincipal();
         AppUser existingUser=userRepository.findById(user.getId()).orElseThrow();
 
-        return existingUser.getBlogs().stream().map(blog->modelMapper.map(blog,BlogDto.class)).toList();
+        return existingUser.getBlogs().stream().map(blog->modelMapper.map(blog,BlogResponseDto.class)).toList();
     }
 
-    public void deleteByBlog(Long blogId) throws AccessDeniedException {
+    public void deleteByBlog(Long blogId){
         if(!blogRepository.existsById(blogId)){
             throw new ResourceAccessException("Blog not found with id "+blogId);
         }
 
         blogRepository.deleteById(blogId);
 
+    }
+
+    public Object updateBlogById(Long blogId, BlogDto blogDto) {
+        Blog existingBlog=blogRepository.findById(blogId).orElseThrow(()->new IllegalArgumentException("Blog not found with id "+blogId));
+        Blog updateDetails=modelMapper.map(blogDto,Blog.class);
+        existingBlog.setTitle(updateDetails.getTitle());
+        existingBlog.setBody(updateDetails.getBody());
+        existingBlog=blogRepository.save(existingBlog);
+        return modelMapper.map(existingBlog,BlogResponseDto.class);
     }
 }

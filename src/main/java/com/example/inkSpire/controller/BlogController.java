@@ -52,4 +52,13 @@ public class BlogController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/blog/{blogId}/update")
+    public ResponseEntity<?> updateBlogById(@PathVariable Long blogId,@RequestBody BlogDto blogDto){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(blogService.updateBlogById(blogId,blogDto));
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
