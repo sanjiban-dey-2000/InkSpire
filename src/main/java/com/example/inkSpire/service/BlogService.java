@@ -13,8 +13,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BlogService {
@@ -29,7 +36,7 @@ public class BlogService {
         this.userRepository = userRepository1;
     }
 
-    public Object addBlogs(BlogDto blogDto) {
+    public Object addBlogs(BlogDto blogDto) throws IOException {
         Authentication auth= SecurityContextHolder.getContext().getAuthentication();
         AppUser user=(AppUser) auth.getPrincipal();
         AppUser existingUser=userRepository.findById(user.getId()).orElseThrow(()->new IllegalArgumentException("User doesn't exist"));
@@ -39,6 +46,26 @@ public class BlogService {
                         .createdAt(LocalDateTime.now())
                         .user(existingUser)
                         .build();
+        //handle image upload
+        if(blogDto.getImage()!=null && !blogDto.getImage().isEmpty()){
+            String uploadDir="uploads/";
+            String originalFilename=blogDto.getImage().getOriginalFilename();
+            String fileName= UUID.randomUUID()+"_"+originalFilename;
+
+            Path uploadPath= Paths.get(uploadDir);
+            if(!Files.exists(uploadPath)){
+                Files.createDirectories(uploadPath);
+            }
+
+            try(InputStream inputStream=blogDto.getImage().getInputStream()){
+                Path filePath=uploadPath.resolve(fileName);
+                Files.copy(inputStream,filePath, StandardCopyOption.REPLACE_EXISTING);
+                blog.setImagePath(fileName);
+            }catch(IOException ex){
+                throw new IOException("Could not save image file "+originalFilename,ex);
+            }
+        }
+
         existingUser.getBlogs().add(blog);
         blog=blogRepository.save(blog);
 
