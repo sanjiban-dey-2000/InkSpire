@@ -15,5 +15,6 @@ public class GetBlogDto {
     private String title;
     private String body;
     private LocalDateTime createdAt;
+    private String imageUrl;
     private  UserDto user;
 }

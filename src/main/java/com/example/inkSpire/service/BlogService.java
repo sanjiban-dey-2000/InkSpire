@@ -73,10 +73,15 @@ public class BlogService {
     }
 
     public List<GetBlogDto> getAllBlogs() {
-        List<Blog> blog= blogRepository.findAll();
-        List<GetBlogDto> blogDetailsDto=blog.stream().map(blogs->modelMapper.map(blogs,GetBlogDto.class)).toList();
-
-        return blogDetailsDto;
+        List<Blog> blogs= blogRepository.findAll();
+        return blogs.stream().map(blog->{
+            GetBlogDto dto=modelMapper.map(blog,GetBlogDto.class);
+            //if image exists, build full URL
+            if(blog.getImagePath()!=null){
+                dto.setImageUrl("http://localhost:8080/uploads/"+blog.getImagePath());
+            }
+            return dto;
+        }).toList();
     }
 
 
