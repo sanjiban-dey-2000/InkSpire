@@ -7,7 +7,6 @@ import com.example.inkSpire.entity.AppUser;
 import com.example.inkSpire.entity.Blog;
 import com.example.inkSpire.repository.AppUserRepository;
 import com.example.inkSpire.repository.BlogRepository;
-import com.example.inkSpire.security.CustomUserDetails;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

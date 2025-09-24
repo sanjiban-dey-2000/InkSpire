@@ -6,6 +6,7 @@ import com.example.inkSpire.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,8 +21,12 @@ public class BlogController {
     }
 
     @PostMapping("/blog/add")
-    public ResponseEntity<?> addBlogs(@RequestBody BlogDto blogDto){
+    public ResponseEntity<?> addBlogs(@RequestParam("title") String title, @RequestParam("body") String body, @RequestParam(value="image",required=false)MultipartFile image){
         try{
+            BlogDto blogDto=new BlogDto();
+            blogDto.setTitle(title);
+            blogDto.setBody(body);
+            blogDto.setImage(image);
             return ResponseEntity.status(HttpStatus.CREATED).body(blogService.addBlogs(blogDto));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

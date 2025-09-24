@@ -26,6 +26,8 @@ public class Blog {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    private String imagePath;
+
     @ManyToOne
     private AppUser user;
 
