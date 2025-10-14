@@ -90,7 +90,15 @@ public class BlogService {
         AppUser user=(AppUser) auth.getPrincipal();
         AppUser existingUser=userRepository.findById(user.getId()).orElseThrow();
 
-        return existingUser.getBlogs().stream().map(blog->modelMapper.map(blog,BlogResponseDto.class)).toList();
+        return existingUser.getBlogs().stream().map(blog->{
+            BlogResponseDto blogResDto=modelMapper.map(blog,BlogResponseDto.class);
+
+            if(blog.getImagePath()!=null){
+                blogResDto.setImageUrl("http://localhost:8080/uploads/"+blog.getImagePath());
+            }
+            return blogResDto;
+        }).toList();
+
     }
 
     public void deleteByBlog(Long blogId){
