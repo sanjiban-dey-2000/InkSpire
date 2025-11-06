@@ -119,8 +119,25 @@ public class BlogService {
         return modelMapper.map(existingBlog,BlogResponseDto.class);
     }
 
-    public List<BlogResponseDto> searchByKeyword(String keyword) {
+    public List<GetBlogDto> searchByKeyword(String keyword) {
         List<Blog> blogs=blogRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(keyword,keyword);
-        return blogs.stream().map(allBlogs->modelMapper.map(allBlogs,BlogResponseDto.class)).toList();
+        return blogs.stream().map(blog->{
+            GetBlogDto dto=modelMapper.map(blog,GetBlogDto.class);
+            //if image exists, build full URL
+            if(blog.getImagePath()!=null){
+                dto.setImageUrl("http://localhost:8080/uploads/"+blog.getImagePath());
+            }
+            return dto;
+        }).toList();
+    }
+
+    public Object getBlogById(Long BlogId) {
+        Blog blogDetails=blogRepository.findById(BlogId).orElseThrow(()->new IllegalArgumentException("No blog found"));
+        GetBlogDto dto=modelMapper.map(blogDetails,GetBlogDto.class);
+        if(blogDetails.getImagePath()!=null){
+            dto.setImageUrl("http://localhost:8080/uploads/" + blogDetails.getImagePath());
+        }
+
+        return dto;
     }
 }

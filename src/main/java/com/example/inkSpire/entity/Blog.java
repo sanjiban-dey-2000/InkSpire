@@ -20,7 +20,7 @@ public class Blog {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 100000)
     private String body;
 
     @Column(nullable = false)

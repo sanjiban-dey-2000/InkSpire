@@ -2,6 +2,7 @@ package com.example.inkSpire.controller;
 
 import com.example.inkSpire.dto.BlogDto;
 import com.example.inkSpire.dto.BlogResponseDto;
+import com.example.inkSpire.dto.GetBlogDto;
 import com.example.inkSpire.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,15 @@ public class BlogController {
         }
     }
 
+    @GetMapping("/blog/{BlogId}")
+    public ResponseEntity<?> getBlogById(@PathVariable Long BlogId){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(blogService.getBlogById(BlogId));
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @DeleteMapping("/blog/{blogId}/remove")
     public ResponseEntity<?> deleteBlogByID(@PathVariable Long blogId){
         try{
@@ -72,7 +82,7 @@ public class BlogController {
     }
 
     @GetMapping("/blogs/search")
-    public ResponseEntity<List<BlogResponseDto>> searchByKeyword(@RequestParam("q") String keyword){
+    public ResponseEntity<List<GetBlogDto>> searchByKeyword(@RequestParam("q") String keyword){
         return ResponseEntity.status(HttpStatus.OK).body(blogService.searchByKeyword(keyword));
     }
 }
