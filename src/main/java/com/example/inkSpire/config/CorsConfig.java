@@ -15,7 +15,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**")
-                        .allowedOrigins("https://inkspire-frontend-git-main-sanjiban-deys-projects.vercel.app")
+                        .allowedOrigins("https://inkspire-frontend-lemon.vercel.app")
                         .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
