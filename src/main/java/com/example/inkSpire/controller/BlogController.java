@@ -1,5 +1,8 @@
 package com.example.inkSpire.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.example.inkSpire.config.CloudinaryConfig;
 import com.example.inkSpire.dto.BlogDto;
 import com.example.inkSpire.dto.BlogResponseDto;
 import com.example.inkSpire.dto.GetBlogDto;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -17,9 +21,11 @@ import java.util.List;
 public class BlogController {
 
     private final BlogService blogService;
+    private final Cloudinary cloudinary;
 
-    public BlogController(BlogService blogService) {
+    public BlogController(BlogService blogService, Cloudinary cloudinary) {
         this.blogService = blogService;
+        this.cloudinary=cloudinary;
     }
 
     @PostMapping("/blog/add")
@@ -28,7 +34,11 @@ public class BlogController {
             BlogDto blogDto=new BlogDto();
             blogDto.setTitle(title);
             blogDto.setBody(body);
-            blogDto.setImage(image);
+            if(image!=null && !image.isEmpty()){
+                Map uploadResult=cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+                String imageUrl=uploadResult.get("secure_url").toString();
+                blogDto.setImageUrl(imageUrl);
+            }
             return ResponseEntity.status(HttpStatus.CREATED).body(blogService.addBlogs(blogDto));
         }catch(Exception ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

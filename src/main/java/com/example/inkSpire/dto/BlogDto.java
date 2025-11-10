@@ -14,5 +14,5 @@ public class BlogDto {
     private String title;
     private String body;
     private String category;
-    private MultipartFile image;
+    private String imageUrl;
 }

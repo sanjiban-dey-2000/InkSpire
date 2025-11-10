@@ -23,8 +23,8 @@ public class Blog {
     @Column(nullable = false,length = 100000)
     private String body;
 
-    @Column(nullable = false)
-    private String category;
+    /*@Column(nullable = false)
+    private String category;*/
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

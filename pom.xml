@@ -94,7 +94,14 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <!-- Cloudinary Java SDK (with HTTP adapter) -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.32.2</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>
