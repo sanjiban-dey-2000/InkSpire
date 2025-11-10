@@ -24,6 +24,9 @@ public class Blog {
     private String body;
 
     @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     private String imagePath;

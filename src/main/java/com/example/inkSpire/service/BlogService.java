@@ -43,6 +43,7 @@ public class BlogService {
         Blog blog=Blog.builder()
                         .title(blogDto.getTitle())
                         .body(blogDto.getBody())
+                        .category(blogDto.getCategory())
                         .createdAt(LocalDateTime.now())
                         .user(existingUser)
                         .build();
